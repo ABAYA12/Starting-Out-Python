@@ -1,0 +1,77 @@
+The Nobel peace prize is awarded to persons who excel in various fields of endeavor. Currently, only a handful of panel members determine and choose people who qualify for a particular award based on nominations from a wide range of disciplines. This process of selecting the winners for the various prices have been criticized as being biased especially from the side of the panel members. The committee of experts at a general council meeting decided to automate the selection process. On a trial base, you have been engaged to develop a system that will automatically select a nominee as the winner of the award in two categories (peace and science). Your program should have the following functionalities. 
+
+a)	You are to define a class named Nobel_Award. Your class must have two methods, one of the methods should be named Award_Category, and the other method should be named Award_Winner. Your Award_Category must have a string parameter list and return the string when called. Your Award_Winner method must contain two parameters, one should be a string called name and the other an integer called votes. When called (Award_Winner) it should return the name and highest votes as the winner for a particular category. [6 marks] EV
+
+b)	For each category, your program should request three different names of the nominee and the number of votes for each nominee. Your function in “a” above should select the name of the nominee with the highest number of votes as the winner for that category. If there is a tie, in the number of votes, then all the nominees should be declared as winners [7 marks] CR
+
+c)	Critically explain the logic behind your code to a student from another department [7 marks] AN
+
+
+
+
+
+
+
+CODE BELOW:
+
+
+Imported java.util.HashMap and java.util.Map because I used them in the implementation of the Nobel_Award class. These classes are part of the Java Collections Framework and provide a convenient way to store and manipulate key-value pairs.
+
+In this case, I used a HashMap to keep track of the votes for each nominee in a category. The key is the nominee's name (a String), and the value is the number of votes they received (an Integer). The Map interface provides a generic way to work with different types of map implementations, and HashMap is one such implementation.
+
+
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Nobel_Award {
+
+    // Map to store the votes for each nominee in a category
+    private Map<String, Integer> categoryVotes = new HashMap<>();
+
+    // Method to define the award category
+    public String Award_Category(String category) {
+        return "Award Category: " + category;
+    }
+
+    // Method to determine the winner for a category
+    public String Award_Winner(String name, int votes) {
+        // Update the votes for the nominee in the category
+        categoryVotes.put(name, votes);
+
+        // Find the nominee(s) with the highest votes
+        int maxVotes = Integer.MIN_VALUE;
+        for (int voteCount : categoryVotes.values()) {
+            maxVotes = Math.max(maxVotes, voteCount);
+        }
+
+        // Check for ties and declare winners
+        StringBuilder winners = new StringBuilder("Winner(s): ");
+        for (Map.Entry<String, Integer> entry : categoryVotes.entrySet()) {
+            if (entry.getValue() == maxVotes) {
+                winners.append(entry.getKey()).append(", ");
+            }
+        }
+        // Remove the trailing comma and space
+        winners.delete(winners.length() - 2, winners.length());
+
+        return winners.toString() + " with " + maxVotes + " votes";
+    }
+
+    public static void main(String[] args) {
+        Nobel_Award noblePeacePrize = new Nobel_Award();
+
+        // Peace category
+        noblePeacePrize.Award_Category("Peace");
+        System.out.println(noblePeacePrize.Award_Winner("Nominee1", 10));
+        System.out.println(noblePeacePrize.Award_Winner("Nominee2", 15));
+        System.out.println(noblePeacePrize.Award_Winner("Nominee3", 10));
+
+        // Science category
+        Nobel_Award nobleSciencePrize = new Nobel_Award();
+        nobleSciencePrize.Award_Category("Science");
+        System.out.println(nobleSciencePrize.Award_Winner("Scientist1", 20));
+        System.out.println(nobleSciencePrize.Award_Winner("Scientist2", 15));
+        System.out.println(nobleSciencePrize.Award_Winner("Scientist3", 20));
+    }
+}
